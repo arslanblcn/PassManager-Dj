@@ -36,4 +36,6 @@ Password generator app is written in Django, Python web-framework.
 * Create a method for password status progress bar
 * Restrict access to user objects
 
+## REFERENCES
 
+* I used one of the free creative tim template. [Material Dashboard Dark](https://www.creative-tim.com/product/material-dashboard-dark)
