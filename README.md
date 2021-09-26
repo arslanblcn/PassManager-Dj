@@ -1,5 +1,5 @@
 # PassManager-Dj
-Password generator app is written in Django, Python web-framework.
+Password generator app, written in Django, Python web-framework.
 
 ![Gif](passmanager.gif)
 
