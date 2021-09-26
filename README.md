@@ -33,7 +33,7 @@ Password generator app is written in Django, Python web-framework.
 ## TODO
 
 * Fix notification board
-* Create a model for password model
+* Create a method for password status progress bar
 * Restrict access to user objects
 
 
