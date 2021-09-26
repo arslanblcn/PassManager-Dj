@@ -1,0 +1,212 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+{% include 'header.html' %}
+{% if messages %}
+{% for message in messages %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="alert alert-{{message.tags}}">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <i class="material-icons">close</i>
+            </button>
+            {% if message.tags == 'success' %}
+            <strong>{{ message|escape }}{{object.retired_date}}</strong>
+            {% else %}
+            <strong>{{ message|escape }}</strong>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endif %}
+<script type="text/javascript">
+    window.setTimeout(function () {
+        $(".alert").fadeTo(500, 0).slideUp(500, function () {
+            $(this).remove();
+        });
+    }, 3000);
+</script>
+<div class="row">
+    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
+        <div class="card card-stats">
+            <div class="card-header card-header-success card-header-icon">
+                <div class="card-icon">
+                    <i class="material-icons">password</i>
+                </div>
+                <p class="card-category">Latest Password</p>
+                <h3 class="card-title">{{last_item.password|truncatechars:10}}</h3>
+            </div>
+            <div class="card-footer">
+                <div class="stats">
+                    <i class="material-icons">date_range</i>{{last_item.created_date}}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
+        <div class="card card-stats">
+            <div class="card-header card-header-danger card-header-icon">
+                <div class="card-icon">
+                    <i class="material-icons">info_outline</i>
+                </div>
+                <p class="card-category">Expiration Soon</p>
+                <h3 class="card-title">{{closest_date.password|truncatechars:10}}</h3>
+            </div>
+            <div class="card-footer">
+                <div class="stats">
+                    <i class="material-icons">date_range</i> {{closest_date.retired_date}}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
+        <div class="card card-stats">
+            <div class="card-header card-header-warning card-header-icon">
+                <div class="card-icon">
+                    <i class="material-icons">warning</i>
+                </div>
+                <p class="card-category">Total Passwords</p>
+                <h3 class="card-title">{{records}}
+                    <small>Pieces</small>
+                </h3>
+            </div>
+            <div class="card-footer">
+                <div class="stats">
+                    <i class="material-icons text-warning">add</i>
+                    <a href="{% url 'create-password' %}" class="warning-link">Get More Password...</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
+        <div class="card card-stats">
+            <div class="card-header card-header-info card-header-icon">
+                <div class="card-icon">
+                    <i class="fa fa-twitter"></i>
+                </div>
+                <p class="card-category">Followe me</p>
+                <h3 class="card-title">+1</h3>
+            </div>
+            <div class="card-footer">
+                <div class="stats">
+                    <i class="material-icons">home</i> arslanblcn
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header card-header-warning">
+                <h4 class="card-title ">Password List</h4>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead class=" text-primary">
+                            <th>
+                                Password
+                            </th>
+                            <th>
+                                Used for Website
+                            </th>
+                            <th>
+                                Created Date
+                            </th>
+                            <th>
+                                Retired Date
+                            </th>
+                            <th>
+                                Explanation
+                            </th>
+                            <th>
+                                Status
+                            </th>
+                            <th class="text-right">
+                                Actions
+                            </th>
+                        </thead>
+                        <tbody>
+                            {% for object in page_obj  %}
+                            <tr>
+                                <td class="text-danger" style="width : 10%;">
+                                    {% if object.password %}
+                                    ********
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {{object.used_for_website|urlize}}
+                                </td>
+                                <td>
+                                    {{object.created_date}}
+                                </td>
+                                <td>
+                                    {{object.retired_date}}
+                                </td>
+                                <td>
+                                    {{object.explanation}}
+                                </td>
+                                <td>
+                                    <div class="progress">
+                                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-success"
+                                            role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"
+                                            style="width: 100%"><strong>Very Strong</strong></div>
+                                    </div>
+                                </td>
+                                <td class="td-actions text-right">
+                                    <a href="/{{object.id}}/" rel="tooltip" title="Detail"
+                                        class="btn btn-white btn-link btn-sm">
+                                        <i class="material-icons">remove_red_eye</i>
+                                    </a>
+                                    <a href="/update/{{object.id}}/" rel="tooltip" title="Edit Password"
+                                        class="btn btn-white btn-link btn-sm">
+                                        <i class="material-icons">edit</i>
+                                    </a>
+                                    <a href="/delete/{{object.id}}/" rel="tooltip" title="Delete Password"
+                                        class="btn btn-white btn-link btn-sm">
+                                        <i class="material-icons">close</i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <div class="row">
+                        <div class="col-7 mx-auto mt-4">
+                            {% if page_obj.has_other_pages %}
+                            <nav aria-label="Pagination for table">
+                                <ul class="pagination justify-content-center">
+                                    {% if page_obj.has_previous %}
+                                    <li class="page-item"><a href="?page={{ page_obj.previous_page_number }}"
+                                            class="page-link">&laquo;</a></li>
+                                    {% else %}
+                                    <li class="page-item disabled"><span class="page-link">&laquo;</span></li>
+                                    {% endif %}
+                                    {% for i in page_obj.paginator.page_range %}
+                                    {% if page_obj.number == i %}
+                                    <li class="active page-item mx-2"><span class="page-link">{{ i }} <span
+                                                class="sr-only">(current)</span></span></li>
+                                    {% else %}
+                                    <li class="page-item"><a href="?page={{ i }}" class="page-link">{{ i }}</a></li>
+                                    {% endif %}
+                                    {% endfor %}
+                                    {% if page_obj.has_next %}
+                                    <li class="page-item"><a href="?page={{ page_obj.next_page_number }}"
+                                            class="page-link">&raquo;</a></li>
+                                    {% else %}
+                                    <li class="page-item disabled"><span class="page-link">&raquo;</span></li>
+                                    {% endif %}
+                                </ul>
+                            </nav>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
